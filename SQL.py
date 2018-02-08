@@ -18,7 +18,9 @@ c.execute("""CREATE TABLE NURSE
 	Salary INT NOT NULL,
 	Checkin_time TIMESTAMP NOT NULL,
 	Checkout_time TIMESTAMP,
-	CONSTRAINT Patients FOREIGN KEY(Name) REFERENCES PATIENT(Name));""")
+	CONSTRAINT Patients FOREIGN KEY(Name) REFERENCES NAMES(Name));""")
+c.execute("""CREATE TABLE NAMES
+        (Name VARCHAR(30) NOT NULL);""")
 c.execute("SELECT * FROM PATIENT;")
 print(c.fetchall())
 c.execute("SELECT * FROM NURSE;")
