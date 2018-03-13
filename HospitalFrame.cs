@@ -150,7 +150,6 @@ public class HospitalFrame : Form
 		if(firstFloor)
 		{
 		
-		graph.DrawRectangle(
 		}
 		else if (secondFloor)
 		{
