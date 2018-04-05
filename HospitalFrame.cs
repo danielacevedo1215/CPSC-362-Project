@@ -15,7 +15,8 @@ public class HospitalFrame : Form
 	private const int frameHeight=720;
 	public int currentNurseIndex = 0;
 	public int currentPatientIndex = 0;
-	public string roomInfo;
+	private int counter = 0;
+	public string roomInfo, roomInfoHolder;
 	// 1080X720
 	private const string titleOfFrame= "Hospital by Marcus Hoertz and Daniel Acevado";
 	private Label title = new Label();
@@ -155,9 +156,9 @@ public class HospitalFrame : Form
 		Controls.Add(payOrInsuranceInput);
 		Controls.Add(roomNumInput);
 		Controls.Add(exit);
-		FlashClock.Interval = 30;
+		FlashClock.Interval = 500;
 		FlashClock.Enabled = false;
-		DisplayClock.Interval = 30;
+		DisplayClock.Interval = 500;
 		DisplayClock.Enabled = false;
 		inputInfo.Click+= new EventHandler(newInput);
 		findPerson.Click+= new EventHandler(seePerson);
@@ -558,7 +559,8 @@ public class HospitalFrame : Form
 		else
 		{
 			System.Console.WriteLine(" {0} with id {1}  found in Room {2}", positionInfo, IdInfo, roomInfo);
-			Invalidate();
+			roomInfoHolder= roomInfo;
+			FlashClock.Enabled= true;
 		}
 		positionInput.Text = String.Empty;
 		firstNameInput.Text = String.Empty;
@@ -606,6 +608,30 @@ public class HospitalFrame : Form
 
 	protected void flashRefresh(System.Object sender, ElapsedEventArgs evt)
 	{
+		if(counter < 7)
+		{
+			if( counter%2== 0)
+			{
+				Invalidate();
+				roomInfo= " ";
+				counter++;
+			}
+			else
+			{
+				Invalidate();
+				roomInfo = roomInfoHolder;
+				counter++;
+			}
+		}
+		else
+		{
+			FlashClock.Enabled= false;
+			counter = 0;
+			roomInfo = " ";
+			roomInfoHolder = " ";
+			Invalidate();
+		}
+			
 		
 	}
 
