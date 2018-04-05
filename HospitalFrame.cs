@@ -6,43 +6,52 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Timers;
+using System.Collections.Generic;
 
 
 public class HospitalFrame : Form
 {
 	private const int frameWidth=1080;
 	private const int frameHeight=720;
+	public int currentNurseIndex = 0;
+	public int currentPatientIndex = 0;
+	public string roomInfo;
 	// 1080X720
 	private const string titleOfFrame= "Hospital by Marcus Hoertz and Daniel Acevado";
 	private Label title = new Label();
-	private TextBox inputBox = new TextBox();
+	private TextBox positionInput = new TextBox();
+	private TextBox firstNameInput = new TextBox();
+	private TextBox lastNameInput = new TextBox();
+	private TextBox payOrInsuranceInput = new TextBox();
+	private TextBox roomNumInput = new TextBox();
+	public struct Nurse
+	{
+		 public string nurseFirstName;
+		 public string nurseLastName;
+		 public string nurseIdNum;
+		 public string payRate;
+		 public string nurseRoom;
+	};
+	List<Nurse> NurseList = new List<Nurse>();
+	public struct Patient
+	{
+		 public string patientFirstName;
+		 public string patientLastName;
+		 public string patientIdNum;
+		 public string insuranceId;
+		 public string patientRoom;
+	}
+	List<Patient> PatientList = new List<Patient>();
 	private string roomNumberHolder= "";
 	private string idNumberHolder= "";
+	private string currentRoomNumber= "";
 	private bool isFlashing = false;
 	private bool isHigh = false;
 	private bool mapShown = false;
 	private bool firstFloor = true;
 	private bool secondFloor= false;
-	private bool room101 = false;
-	private bool room102 = false;
-	private bool room103 = false;
-	private bool room104 = false;
-	private bool room105 = false;
-	private bool room106 = false;
-	private bool room107 = false;
-	private bool room108 = false;
-	private bool room109 = false;
-	private bool room110 = false;
-	private bool room201 = false;
-	private bool room202 = false;
-	private bool room203 = false;
-	private bool room204 = false;
-	private bool room205 = false;
-	private bool room206 = false;
-	private bool room207 = false;
-	private bool room208 = false;
-	private bool room209 = false;
-	private bool room210 = false;
+	private Pen bluePen = new Pen(Color.Blue,4);
+	private Font specialFont = new System.Drawing.Font("Arial", 8, FontStyle.Regular);
 	private Button inputInfo = new Button();
 	private Button findPerson = new Button();
 	private Button findRoom = new Button();
@@ -110,10 +119,26 @@ public class HospitalFrame : Form
 		exit.Size = new System.Drawing.Size( 60, 20);
 		exit.BackColor = Color.Green;
 		exit.Location = new Point ( 900, 650);
-		inputBox.Location  = new Point(700, 600);
-		inputBox.Size = new Size ( 100, 10);
-		inputBox.Font = new Font("Arial", 8, FontStyle.Regular);
-		inputBox.Text= "";
+		positionInput.Location  = new Point(700, 500);
+		positionInput.Size = new Size ( 100, 10);
+		positionInput.Font = new Font("Arial", 8, FontStyle.Regular);
+		positionInput.Text= "";
+		firstNameInput.Location  = new Point(700, 520);
+		firstNameInput.Size = new Size ( 100, 10);
+		firstNameInput.Font = new Font("Arial", 8, FontStyle.Regular);
+		firstNameInput.Text= "";
+		lastNameInput.Location  = new Point(700, 540);
+		lastNameInput.Size = new Size ( 100, 10);
+		lastNameInput.Font = new Font("Arial", 8, FontStyle.Regular);
+		lastNameInput.Text= "";
+		payOrInsuranceInput.Location  = new Point(700, 560);
+		payOrInsuranceInput.Size = new Size ( 100, 10);
+		payOrInsuranceInput.Font = new Font("Arial", 8, FontStyle.Regular);
+		payOrInsuranceInput.Text= "";
+		roomNumInput.Location  = new Point(700, 580);
+		roomNumInput.Size = new Size ( 100, 10);
+		roomNumInput.Font = new Font("Arial", 8, FontStyle.Regular);
+		roomNumInput.Text= "";
 		Controls.Add(inputInfo);
 		Controls.Add(findPerson);
 		Controls.Add(findRoom);
@@ -124,7 +149,11 @@ public class HospitalFrame : Form
 		Controls.Add(viewMap);
 		Controls.Add(changeSalary);
 		Controls.Add(requestStock);
-		Controls.Add(inputBox);
+		Controls.Add(positionInput);
+		Controls.Add(firstNameInput);
+		Controls.Add(lastNameInput);
+		Controls.Add(payOrInsuranceInput);
+		Controls.Add(roomNumInput);
 		Controls.Add(exit);
 		FlashClock.Interval = 30;
 		FlashClock.Enabled = false;
@@ -148,22 +177,391 @@ public class HospitalFrame : Form
 	{
 		Graphics graph = ee.Graphics;
 		if(firstFloor)
-		{
-		
+		{	//figure out how to draw a border
+			if(roomInfo == "101")
+			{
+				graph.FillRectangle(Brushes.Green, 25, 25, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 25,25,100,100);
+				graph.DrawString("101", specialFont, Brushes.Black, 65,70);
+			}
+			if(roomInfo == "102")
+			{
+				graph.FillRectangle(Brushes.Green, 125, 25, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 125,25,100,100);
+				graph.DrawString("102", specialFont, Brushes.Black, 165,70);
+			}
+			if(roomInfo == "103")
+			{
+				graph.FillRectangle(Brushes.Green, 225, 25, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 225,25,100,100);
+				graph.DrawString("103", specialFont, Brushes.Black, 265,70);
+			}
+			if(roomInfo == "104")
+			{
+				graph.FillRectangle(Brushes.Green, 325, 25, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 325,25,100,100);
+				graph.DrawString("104", specialFont, Brushes.Black, 365,70);
+			}
+			if(roomInfo == "105")
+			{
+				graph.FillRectangle(Brushes.Green, 425, 25, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 425,25,100,100);
+				graph.DrawString("105", specialFont, Brushes.Black, 465,70);
+			}
+			if(roomInfo == "106")
+			{
+				graph.FillRectangle(Brushes.Green, 25, 175, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 25,175,100,100);
+				graph.DrawString("106", specialFont, Brushes.Black, 65,220);
+			}
+			if(roomInfo == "107")
+			{
+				graph.FillRectangle(Brushes.Green, 125, 175, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 125,175,100,100);
+				graph.DrawString("107", specialFont, Brushes.Black, 165,220);
+			}
+			if(roomInfo == "108")
+			{
+				graph.FillRectangle(Brushes.Green, 325, 175, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 325,175,100,100);
+				graph.DrawString("108", specialFont, Brushes.Black, 365,220);
+			}
+			if(roomInfo == "109")
+			{
+				graph.FillRectangle(Brushes.Green, 425, 175, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 425,175,100,100);
+				graph.DrawString("109", specialFont, Brushes.Black, 465,220);
+			}
+			if(roomInfo == "110")
+			{
+				graph.FillRectangle(Brushes.Green, 25, 325, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 25,325,100,100);
+				graph.DrawString("110", specialFont, Brushes.Black, 65,370);
+			}
+			if(roomInfo == "111")
+			{
+				graph.FillRectangle(Brushes.Green, 125, 325, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 125,325,100,100);
+				graph.DrawString("111", specialFont, Brushes.Black, 165,370);
+			}
+			if(roomInfo == "112")
+			{
+				graph.FillRectangle(Brushes.Green, 225, 325, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 225,325,100,100);
+				graph.DrawString("112", specialFont, Brushes.Black, 265,370);
+			}
+			if(roomInfo == "113")
+			{
+				graph.FillRectangle(Brushes.Green, 325, 325, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 325,325,100,100);
+				graph.DrawString("113", specialFont, Brushes.Black, 365,370);
+			}
+			if(roomInfo == "114")
+			{
+				graph.FillRectangle(Brushes.Green, 425, 325, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 425,325,100,100);
+				graph.DrawString("114", specialFont, Brushes.Black, 465,370);
+			}
 		}
 		else if (secondFloor)
 		{
+			if(roomInfo == "201")
+			{
+				graph.FillRectangle(Brushes.Green, 25, 25, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 25,25,100,100);
+				graph.DrawString("201", specialFont, Brushes.Black, 65,70);
+			}
+			if(roomInfo == "202")
+			{
+				graph.FillRectangle(Brushes.Green, 125, 25, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 125,25,100,100);
+				graph.DrawString("202", specialFont, Brushes.Black, 165,70);
+			}
+			if(roomInfo == "203")
+			{
+				graph.FillRectangle(Brushes.Green, 225, 25, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 225,25,100,100);
+				graph.DrawString("203", specialFont, Brushes.Black, 265,70);
+			}
+			if(roomInfo == "204")
+			{
+				graph.FillRectangle(Brushes.Green, 325, 25, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 325,25,100,100);
+				graph.DrawString("204", specialFont, Brushes.Black, 365,70);
+			}
+			if(roomInfo == "205")
+			{
+				graph.FillRectangle(Brushes.Green, 425, 25, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 425,25,100,100);
+				graph.DrawString("205", specialFont, Brushes.Black, 465,70);
+			}
+			if(roomInfo == "206")
+			{
+				graph.FillRectangle(Brushes.Green, 25, 175, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 25,175,100,100);
+				graph.DrawString("206", specialFont, Brushes.Black, 65,220);
+			}
+			if(roomInfo == "207")
+			{
+				graph.FillRectangle(Brushes.Green, 125, 175, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 125,175,100,100);
+				graph.DrawString("207", specialFont, Brushes.Black, 165,220);
+			}
+			if(roomInfo == "208")
+			{
+				graph.FillRectangle(Brushes.Green, 325, 175, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 325,175,100,100);
+				graph.DrawString("208", specialFont, Brushes.Black, 365,220);
+			}
+			if(roomInfo == "209")
+			{
+				graph.FillRectangle(Brushes.Green, 425, 175, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 425,175,100,100);
+				graph.DrawString("209", specialFont, Brushes.Black, 465,220);
+			}
+			if(roomInfo == "210")
+			{
+				graph.FillRectangle(Brushes.Green, 25, 325, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 25,325,100,100);
+				graph.DrawString("210", specialFont, Brushes.Black, 65,370);
+			}
+			if(roomInfo == "211")
+			{
+				graph.FillRectangle(Brushes.Green, 125, 325, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 125,325,100,100);
+				graph.DrawString("211", specialFont, Brushes.Black, 165,370);
+			}
+			if(roomInfo == "212")
+			{
+				graph.FillRectangle(Brushes.Green, 225, 325, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 225,325,100,100);
+				graph.DrawString("212", specialFont, Brushes.Black, 265,370);
+			}
+			if(roomInfo == "213")
+			{
+				graph.FillRectangle(Brushes.Green, 325, 325, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 325,325,100,100);
+				graph.DrawString("213", specialFont, Brushes.Black, 365,370);
+			}
+			if(roomInfo == "214")
+			{
+				graph.FillRectangle(Brushes.Green, 425, 325, 100, 100);
+			}
+			else
+			{
+				graph.DrawRectangle(bluePen, 425,325,100,100);
+				graph.DrawString("214", specialFont, Brushes.Black, 465,370);
+			}
 		}
 	}
 
 	protected void newInput(Object sender, EventArgs e)
 	{
-	
+		string positionInfo, firstNameInfo, lastNameInfo, payOrInsuranceInfo, roomNumInfo;
+		positionInfo = positionInput.Text;
+		firstNameInfo = firstNameInput.Text;
+		lastNameInfo = lastNameInput.Text;
+		payOrInsuranceInfo = payOrInsuranceInput.Text;
+		roomNumInfo = roomNumInput.Text;
+		//userInput = inputBox.Text;
+		insertInfo(positionInfo, firstNameInfo, lastNameInfo, payOrInsuranceInfo, roomNumInfo);
+		if( positionInfo == "nurse" || positionInfo == "Nurse")
+		{
+			System.Console.WriteLine(" {0} {1} added to the Nurse Info. Added with Id num {2}", positionInfo, lastNameInfo, NurseList[currentNurseIndex].nurseIdNum);
+			currentNurseIndex++;
+		}
+		else
+		{
+			System.Console.WriteLine(" {0} {1} added to the Patient Info. Added with Id num {2}", positionInfo, firstNameInfo, PatientList[currentPatientIndex].patientIdNum);
+			currentPatientIndex++;
+		}
+		positionInput.Text = String.Empty;
+		firstNameInput.Text = String.Empty;
+		lastNameInput.Text = String.Empty;
+		payOrInsuranceInput.Text = String.Empty;
+		roomNumInput.Text = String.Empty;
+	}
+
+	protected void insertInfo(string positionInput, string firstNameInput, string lastNameInput, string payOrInsuranceInput, string roomNumInput)
+	{
+		if( positionInput == "nurse" || positionInput == "Nurse")
+		{
+			Nurse newNurse = new Nurse();
+			newNurse.nurseFirstName = firstNameInput;
+			newNurse.nurseLastName = lastNameInput;
+			newNurse.payRate = payOrInsuranceInput;
+			newNurse.nurseRoom = roomNumInput;
+			int idIncrement = 1;
+			for( int i = 0; i< NurseList.Count; i++)
+			{
+				if(NurseList[i].nurseLastName == newNurse.nurseLastName)
+				{
+					idIncrement++;
+				}
+			}
+			if( idIncrement <10)
+			{
+				newNurse.nurseIdNum = lastNameInput + "00" + idIncrement.ToString();
+			}
+			if( idIncrement >=10 && idIncrement< 100)
+			{
+				newNurse.nurseIdNum = lastNameInput + "0" + idIncrement.ToString();
+			}
+			if( idIncrement >=100)
+			{
+				newNurse.nurseIdNum = lastNameInput  + idIncrement.ToString();
+			}
+			NurseList.Add(newNurse);
+		}
+		else
+		{
+			Patient newPatient = new Patient();
+			newPatient.patientFirstName = firstNameInput;
+			newPatient.patientLastName = lastNameInput;
+			newPatient.insuranceId = payOrInsuranceInput;
+			newPatient.patientRoom = roomNumInput;
+			int idIncrement = 1;
+			for( int i = 0; i< PatientList.Count; i++)
+			{
+				if(PatientList[i].patientFirstName == newPatient.patientFirstName)
+				{
+					idIncrement++;
+				}
+			}
+			if( idIncrement <10)
+			{
+				newPatient.patientIdNum = firstNameInput + "00" + idIncrement.ToString();
+			}
+			if( idIncrement >=10 && idIncrement< 100)
+			{
+				newPatient.patientIdNum = firstNameInput + "0" + idIncrement.ToString();
+			}
+			if( idIncrement >=100)
+			{
+				newPatient.patientIdNum = firstNameInput  + idIncrement.ToString();
+			}
+			PatientList.Add(newPatient);
+		}
 	}
 
 	protected void seePerson(Object sender, EventArgs e)
 	{
-	
+
+		string positionInfo = positionInput.Text;
+		string IdInfo = firstNameInput.Text;
+		 roomInfo = " ";
+		if( positionInfo == "Nurse" || positionInfo == "nurse")
+		{
+			for(int i = 0; i< NurseList.Count; i++)
+			{
+				if(NurseList[i].nurseIdNum == IdInfo)
+				{
+					roomInfo = NurseList[i].nurseRoom;
+				}
+			}
+		}
+		else
+		{
+			for(int i = 0; i< PatientList.Count; i++)
+			{
+				if(PatientList[i].patientIdNum == IdInfo)
+				{
+					roomInfo = PatientList[i].patientRoom;
+				}
+			}
+		}
+		if(roomInfo == " ")
+		{
+			System.Console.WriteLine(" ERROR: {0} with id {1} not found. Please try again", positionInfo, IdInfo);
+		}
+		else
+		{
+			System.Console.WriteLine(" {0} with id {1}  found in Room {2}", positionInfo, IdInfo, roomInfo);
+			Invalidate();
+		}
+		positionInput.Text = String.Empty;
+		firstNameInput.Text = String.Empty;
 	}
 
 	protected void seeRoom(Object sender, EventArgs e)
