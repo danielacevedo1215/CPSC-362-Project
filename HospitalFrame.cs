@@ -46,11 +46,17 @@ public class HospitalFrame : Form
 	private string roomNumberHolder= "";
 	private string idNumberHolder= "";
 	private string currentRoomNumber= "";
+	private string helpText1 = "";
+	private string helpText2 = "";
+	private string helpText3 = "";
+	private string helpText4 = "";
+	private string helpText5 = "";
 	private bool isFlashing = false;
 	private bool isHigh = false;
 	private bool mapShown = false;
 	private bool firstFloor = true;
 	private bool secondFloor= false;
+	private bool helpText = false;
 	private Pen bluePen = new Pen(Color.Blue,4);
 	private Font specialFont = new System.Drawing.Font("Arial", 8, FontStyle.Regular);
 	private Button inputInfo = new Button();
@@ -64,6 +70,15 @@ public class HospitalFrame : Form
 	private Button requestStock = new Button();
 	private Button viewMap = new Button();
 	private Button exit = new Button();
+	private bool inputHelp = true;
+	private bool findPersonHelp= true;
+	private bool findRoomHelp = true;
+	private bool changeRoomHelp = true;
+	private bool changeSalaryHelp = true;
+	private bool viewInfoHelp = true;
+	private bool viewNursesHelp = true;
+	private bool requestStockHelp = true;
+	private bool adminLevel = false;
 	private static System.Timers.Timer FlashClock = new System.Timers.Timer();
 	private static System.Timers.Timer DisplayClock = new System.Timers.Timer();
 
@@ -88,7 +103,7 @@ public class HospitalFrame : Form
 		findRoom.Size = new System.Drawing.Size(80,20);
 		findRoom.BackColor = Color.Green;
 		findRoom.Location = new Point (280, 600);
-		changeRoom.Text = "Change Room";
+		changeRoom.Text = "New Room";
 		changeRoom.Size = new System.Drawing.Size(80,20);
 		changeRoom.BackColor = Color.Green;
 		changeRoom.Location = new Point (380, 600);
@@ -96,11 +111,11 @@ public class HospitalFrame : Form
 		viewInfo.Size = new System.Drawing.Size(80,20);
 		viewInfo.BackColor = Color.Green;
 		viewInfo.Location = new Point (480, 600);
-		viewNurses.Text = "View Nurses";
+		viewNurses.Text = "Nurses";
 		viewNurses.Size = new System.Drawing.Size(80,20);
 		viewNurses.BackColor = Color.Green;
 		viewNurses.Location = new Point (80, 650);
-		viewPatients.Text = "View Patients";
+		viewPatients.Text = "Patients";
 		viewPatients.Size = new System.Drawing.Size(80,20);
 		viewPatients.BackColor = Color.Green;
 		viewPatients.Location = new Point (180, 650);
@@ -108,7 +123,7 @@ public class HospitalFrame : Form
 		viewMap.Size = new System.Drawing.Size(80,20);
 		viewMap.BackColor = Color.Green;
 		viewMap.Location = new Point (280, 650);
-		changeSalary.Text = "Change Salary";
+		changeSalary.Text = "Salary";
 		changeSalary.Size = new System.Drawing.Size(80,20);
 		changeSalary.BackColor = Color.Red;
 		changeSalary.Location = new Point (380, 650);
@@ -158,7 +173,7 @@ public class HospitalFrame : Form
 		Controls.Add(exit);
 		FlashClock.Interval = 500;
 		FlashClock.Enabled = false;
-		DisplayClock.Interval = 500;
+		DisplayClock.Interval = 1500;
 		DisplayClock.Enabled = false;
 		inputInfo.Click+= new EventHandler(newInput);
 		findPerson.Click+= new EventHandler(seePerson);
@@ -306,7 +321,7 @@ public class HospitalFrame : Form
 				graph.DrawString("114", specialFont, Brushes.Black, 465,370);
 			}
 		}
-		else if (secondFloor)
+		if (secondFloor)
 		{
 			if(roomInfo == "201")
 			{
@@ -435,10 +450,39 @@ public class HospitalFrame : Form
 				graph.DrawString("214", specialFont, Brushes.Black, 465,370);
 			}
 		}
+		if( helpText)
+		{
+			graph.DrawString(helpText1, specialFont, Brushes.Black, 820, 500);
+			graph.DrawString(helpText2, specialFont, Brushes.Black, 820, 520);
+			graph.DrawString(helpText3, specialFont, Brushes.Black, 820, 540);
+			graph.DrawString(helpText4, specialFont, Brushes.Black, 820, 560);
+			graph.DrawString(helpText5, specialFont, Brushes.Black, 820, 580);
+		}
 	}
 
 	protected void newInput(Object sender, EventArgs e)
 	{
+		if( inputHelp)
+		{
+			helpText1 = "Nurse or Patient?";
+			helpText2 = "First Name";
+			helpText3 = "Last Name";
+			helpText4 = "Pay or Insurance";
+			helpText5 = "Room Number";
+			inputHelp = false;
+			findPersonHelp= true;
+	 		findRoomHelp = true;
+	 		changeRoomHelp = true;
+	 		changeSalaryHelp = true;
+	 		viewInfoHelp = true;
+	 		viewNursesHelp = true;
+	 		requestStockHelp = true;
+			helpText = true;
+			Invalidate();
+			
+		}
+		else
+		{
 		string positionInfo, firstNameInfo, lastNameInfo, payOrInsuranceInfo, roomNumInfo;
 		positionInfo = positionInput.Text;
 		firstNameInfo = firstNameInput.Text;
@@ -462,6 +506,10 @@ public class HospitalFrame : Form
 		lastNameInput.Text = String.Empty;
 		payOrInsuranceInput.Text = String.Empty;
 		roomNumInput.Text = String.Empty;
+		inputHelp = true;
+		helpText = false;
+		Invalidate();
+		}
 	}
 
 	protected void insertInfo(string positionInput, string firstNameInput, string lastNameInput, string payOrInsuranceInput, string roomNumInput)
@@ -528,7 +576,26 @@ public class HospitalFrame : Form
 
 	protected void seePerson(Object sender, EventArgs e)
 	{
-
+		if( findPersonHelp)
+		{
+			helpText1 = "Nurse or Patient?";
+			helpText2 = "ID number";
+			helpText3 = "Empty";
+			helpText4 = "Empty";
+			helpText5 = "Empty";
+			inputHelp = true;
+			findPersonHelp= false;
+	 		findRoomHelp = true;
+	 		changeRoomHelp = true;
+	 		changeSalaryHelp = true;
+	 		viewInfoHelp = true;
+	 		viewNursesHelp = true;
+	 		requestStockHelp = true;
+			helpText = true;
+			Invalidate();
+		}
+		else
+		{
 		string positionInfo = positionInput.Text;
 		string IdInfo = firstNameInput.Text;
 		 roomInfo = " ";
@@ -564,46 +631,398 @@ public class HospitalFrame : Form
 		}
 		positionInput.Text = String.Empty;
 		firstNameInput.Text = String.Empty;
+		findPersonHelp = true;
+		helpText = false;
+		Invalidate();
+		}
 	}
 
 	protected void seeRoom(Object sender, EventArgs e)
 	{
-	
+		if( findRoomHelp)
+		{
+			helpText1 = "Room Number";
+			helpText2 = "Empty";
+			helpText3 = "Empty";
+			helpText4 = "Empty";
+			helpText5 = "Empty";
+			inputHelp = true;
+			findPersonHelp= true;
+	 		findRoomHelp = false;
+	 		changeRoomHelp = true;
+	 		changeSalaryHelp = true;
+	 		viewInfoHelp = true;
+	 		viewNursesHelp = true;
+	 		requestStockHelp = true;
+			helpText = true;
+			Invalidate();
+		}
+		else
+		{
+		string roomNumFound = positionInput.Text;
+		List<string> nurseIdFound = new List<string>();
+		List<string> patientIdFound = new List<string>();
+		for(int i = 0; i< PatientList.Count; i++)
+		{
+			if(PatientList[i].patientRoom == roomNumFound)
+			{
+				patientIdFound.Add(PatientList[i].patientIdNum);
+			}
+		}
+		for(int i = 0; i< NurseList.Count; i++)
+		{
+			if(NurseList[i].nurseRoom == roomNumFound)
+			{
+				nurseIdFound.Add(NurseList[i].nurseIdNum);
+			}
+		}
+		for( int i = 0; i< nurseIdFound.Count; i++)
+		{
+			System.Console.WriteLine(" Nurse with id {0}  is in Room {1}", nurseIdFound[i], roomNumFound);
+		}
+		for( int i = 0; i< patientIdFound.Count; i++)
+		{
+			System.Console.WriteLine(" Patient with id {0}  is in Room {1}", patientIdFound[i], roomNumFound);
+		}
+		roomInfo = roomNumFound;
+		roomInfoHolder= roomInfo;
+		FlashClock.Enabled = true;
+		positionInput.Text = String.Empty;
+		findRoomHelp = true;
+		helpText = false;
+		Invalidate();
+		}
 	}
 
 	protected void modifyRoom(Object sender, EventArgs e)
 	{
-	
+		if( changeRoomHelp)
+		{
+			helpText1 = "Nurse or Patient";
+			helpText2 = "ID Number";
+			helpText3 = "New Room Number";
+			helpText4 = "Empty";
+			helpText5 = "Empty";
+			inputHelp = true;
+			findPersonHelp= true;
+	 		findRoomHelp = true;
+	 		changeRoomHelp = false;
+	 		changeSalaryHelp = true;
+	 		viewInfoHelp = true;
+	 		viewNursesHelp = true;
+	 		requestStockHelp = true;
+			helpText = true;
+			Invalidate();
+		}
+		else
+		{
+		string positionHolder = positionInput.Text;
+		string idNumHolder = firstNameInput.Text;
+		string newRoomNum = lastNameInput.Text;
+		string oldRoomHolder = " ";
+		if(positionHolder == "Nurse" || positionHolder == "nurse")
+		{
+			for( int i = 0; i < NurseList.Count; i++)
+			{
+				if ( NurseList[i].nurseIdNum == idNumHolder)
+				{
+					oldRoomHolder = NurseList[i].nurseRoom;
+					Nurse v = NurseList[i];
+						v.nurseRoom = newRoomNum;
+					NurseList[i] = v;
+				}
+			}
+		}
+		else
+		{
+			for( int i = 0; i < PatientList.Count; i++)
+			{
+				if ( PatientList[i].patientIdNum == idNumHolder)
+				{
+					oldRoomHolder = PatientList[i].patientRoom;
+					Patient v = PatientList[i];
+						v.patientRoom= newRoomNum;
+					PatientList[i] = v;
+				}
+			}
+		}
+		if( oldRoomHolder == " ")
+		{
+			System.Console.WriteLine(" ERROR: {0} with id {1}  was not found. Please try again", positionHolder, idNumHolder);
+		}
+		else
+		{
+			System.Console.WriteLine(" {0} with id {1}  is now in room {2}, was in room {3}", positionHolder, idNumHolder, newRoomNum, oldRoomHolder);	
+			roomInfo= newRoomNum;
+			roomInfoHolder = roomInfo;
+			FlashClock.Enabled = true;
+		}
+		positionInput.Text = String.Empty;
+		firstNameInput.Text= String.Empty;
+		lastNameInput.Text = String.Empty;
+		changeRoomHelp = true;
+		helpText = false;
+		Invalidate();
+		}
 	}
 
 	protected void seeInfo(Object sender, EventArgs e)
 	{
+		if( viewInfoHelp)
+		{
+			helpText1 = "Nurse or Patient";
+			helpText2 = "ID Number";
+			helpText3 = "Empty";
+			helpText4 = "Empty";
+			helpText5 = "Empty";
+			inputHelp = true;
+			findPersonHelp= true;
+	 		findRoomHelp = true;
+	 		changeRoomHelp = true;
+	 		changeSalaryHelp = true;
+	 		viewInfoHelp = false;
+	 		viewNursesHelp = true;
+	 		requestStockHelp = true;
+			helpText = true;
+			Invalidate();
+		}
+		else
+		{
+
+			string positionHolder = positionInput.Text;
+			string idNumHolder = firstNameInput.Text;
+			string roomHolder = " ";
+			string firstNameHolder = " ";
+			string lastNameHolder= " ";
+			string payOrInsuranceHolder= " ";
+			if(positionHolder == "Nurse" || positionHolder == "nurse")
+			{
+				for( int i = 0; i < NurseList.Count; i++)
+				{
+					if ( NurseList[i].nurseIdNum == idNumHolder)
+					{
+						firstNameHolder = NurseList[i].nurseFirstName;
+						lastNameHolder = NurseList[i].nurseLastName;
+						payOrInsuranceHolder = NurseList[i].payRate;
+						roomHolder = NurseList[i].nurseRoom;
+					}
+				}
+			}
+			else
+			{
+				for( int i = 0; i < PatientList.Count; i++)
+				{
+					if ( PatientList[i].patientIdNum == idNumHolder)
+					{
+						firstNameHolder = PatientList[i].patientFirstName;
+						lastNameHolder = PatientList[i].patientLastName;
+						payOrInsuranceHolder = PatientList[i].insuranceId;
+						roomHolder = PatientList[i].patientRoom;
+					}
+				}
+			}
+			if( roomHolder == " ")
+			{
+				System.Console.WriteLine(" ERROR: {0} with id {1}  was not found. Please try again", positionHolder, idNumHolder);
+			}
+			else
+			{
+				System.Console.WriteLine( " {0} with id {1} found. Here is their info:", positionHolder, idNumHolder);
+				System.Console.WriteLine( " First Name: {0}", firstNameHolder);
+				System.Console.WriteLine( " Last Name: {0}", lastNameHolder);
+				System.Console.WriteLine( " Pay or insurance: {0}", payOrInsuranceHolder);
+				System.Console.WriteLine( " Room Number: {0}", roomHolder);
+			}
+			positionInput.Text = String.Empty;
+			firstNameInput.Text= String.Empty;
+			viewInfoHelp = true;
+			helpText = false;
+			Invalidate();
+		}
 	
 	}
 
 	protected void seeNurses(Object sender, EventArgs e)
 	{
-	
+		helpText= false;
+		Invalidate();
+		inputHelp = true;
+		findPersonHelp= true;
+		findRoomHelp = true;
+	 	changeRoomHelp = true;
+	 	changeSalaryHelp = true;
+	 	viewInfoHelp = true;
+	 	viewNursesHelp = true;
+	 	requestStockHelp = true;
+		System.Console.WriteLine(" Here are all {0} of our nurses" , NurseList.Count);
+		for (int i = 0; i< NurseList.Count; i++)
+		{
+			System.Console.WriteLine("Nurse {0} {1} with ID {2}", NurseList[i].nurseFirstName, NurseList[i].nurseLastName, NurseList[i].nurseIdNum);
+		}
 	}
 
 	protected void seePatients(Object sender, EventArgs e)
 	{
-	
+		helpText= false;
+		Invalidate();
+		inputHelp = true;
+		findPersonHelp= true;
+		findRoomHelp = true;
+	 	changeRoomHelp = true;
+	 	changeSalaryHelp = true;
+	 	viewInfoHelp = true;
+	 	viewNursesHelp = true;
+	 	requestStockHelp = true;
+		System.Console.WriteLine(" Here are all {0} of our patients" , PatientList.Count);
+		for (int i = 0; i< NurseList.Count; i++)
+		{
+			System.Console.WriteLine("Patient {0} {1} with ID {2}", PatientList[i].patientFirstName, PatientList[i].patientLastName, PatientList[i].patientIdNum);
+		}
 	}
 
 	protected void seeMap(Object sender, EventArgs e)
 	{
-	
+		helpText= false;
+		Invalidate();
+		inputHelp = true;
+		findPersonHelp= true;
+		findRoomHelp = true;
+	 	changeRoomHelp = true;
+	 	changeSalaryHelp = true;
+	 	viewInfoHelp = true;
+	 	viewNursesHelp = true;
+	 	requestStockHelp = true;
+		DisplayClock.Enabled = true;
+		Invalidate();
 	}
 
 	protected void modifySalary(Object sender, EventArgs e)
 	{
+		if( !adminLevel)
+		{
+		
+			if( changeSalaryHelp)
+			{
+				helpText1 = "Admin ID";
+				helpText2 = "Admin Password";
+				helpText3 = "Empty";
+				helpText4 = "Empty";
+				helpText5 = "Empty";
+				inputHelp = true;
+				findPersonHelp= true;
+	 			findRoomHelp = true;
+	 			changeRoomHelp = true;
+	 			changeSalaryHelp = false;
+	 			viewInfoHelp = true;
+	 			viewNursesHelp = true;
+	 			requestStockHelp = true;
+				helpText = true;
+				Invalidate();
+			}
+			else
+			{
+				if( positionInput.Text == "admin" && firstNameInput.Text == "password")
+				{
+					System.Console.WriteLine( "Welcome administrator. Admin powers unlocked");
+					changeSalary.BackColor = Color.Green;
+					requestStock.BackColor = Color.Green;
+					positionInput.Text = String.Empty;
+					firstNameInput.Text = String.Empty;
+					adminLevel = true;
+				}
 	
+				changeSalaryHelp = true;
+				helpText = false;
+				Invalidate();
+			}
+		}
+		else
+		{
+			if( changeSalaryHelp)
+			{
+				helpText1 = "Nurse ID number";
+				helpText2 = "New Salary";
+				helpText3 = "Empty";
+				helpText4 = "Empty";
+				helpText5 = "Empty";
+				changeSalaryHelp = false;
+				helpText = true;
+				Invalidate();
+			}
+			else
+			{
+		
+				
+				changeSalaryHelp = true;
+				helpText = false;
+				Invalidate();
+			}
+		}
+
 	}
 
 	protected void modifyStock(Object sender, EventArgs e)
 	{
+		if( !adminLevel)
+		{
+		
+			if( requestStockHelp)
+			{
+				helpText1 = "Admin ID";
+				helpText2 = "Admin Password";
+				helpText3 = "Empty";
+				helpText4 = "Empty";
+				helpText5 = "Empty";
+				inputHelp = true;
+				findPersonHelp= true;
+	 			findRoomHelp = true;
+	 			changeRoomHelp = true;
+	 			changeSalaryHelp = true;
+	 			viewInfoHelp = true;
+	 			viewNursesHelp = true;
+	 			requestStockHelp = false;
+				helpText = true;
+				Invalidate();
+			}
+			else
+			{
+				if( positionInput.Text == "admin" && firstNameInput.Text == "password")
+				{
+					System.Console.WriteLine( "Welcome administrator. Admin powers unlocked");
+					changeSalary.BackColor = Color.Green;
+					requestStock.BackColor = Color.Green;
+					positionInput.Text = String.Empty;
+					firstNameInput.Text = String.Empty;
+					adminLevel = true;
+				}
+					requestStockHelp = true;
+					helpText = false;
+					Invalidate();
+			}
+		}
+		else
+		{
+			if( changeSalaryHelp)
+			{
+				helpText1 = "Nurse ID number";
+				helpText2 = "New Salary";
+				helpText3 = "Empty";
+				helpText4 = "Empty";
+				helpText5 = "Empty";
+				requestStockHelp = false;
+				helpText = true;
+				Invalidate();
+			}
+			else
+			{
+		
 	
+				requestStockHelp = true;
+				helpText = false;
+				Invalidate();
+			}
+		}
+		
 	}
 
 	protected void flashRefresh(System.Object sender, ElapsedEventArgs evt)
@@ -637,7 +1056,21 @@ public class HospitalFrame : Form
 
 protected void displayRefresh(System.Object sender, ElapsedEventArgs evt)
 	{
-		
+		if (counter == 0)
+		{
+			firstFloor = false;
+			secondFloor = true;
+			Invalidate();
+			counter = 1;
+		}
+		else
+		{
+			DisplayClock.Enabled = false;
+			counter = 0;
+			firstFloor= true;
+			secondFloor = false;
+			Invalidate();
+		}
 	}
 
 	protected void exitProgram(Object sender, EventArgs e)
