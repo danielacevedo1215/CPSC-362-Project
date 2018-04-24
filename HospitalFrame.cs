@@ -41,8 +41,15 @@ public class HospitalFrame : Form
 		 public string patientIdNum;
 		 public string insuranceId;
 		 public string patientRoom;
-	}
+	};
 	List<Patient> PatientList = new List<Patient>();
+	public struct Room
+	{
+		public string roomNumber;
+		public string roomDescription;
+		public string roomLevel;
+	};
+	List<Room> RoomList = new List<Room>();	
 	private string roomNumberHolder= "";
 	private string idNumberHolder= "";
 	private string currentRoomNumber= "";
@@ -874,7 +881,7 @@ public class HospitalFrame : Form
 	 	viewNursesHelp = true;
 	 	requestStockHelp = true;
 		System.Console.WriteLine(" Here are all {0} of our patients" , PatientList.Count);
-		for (int i = 0; i< NurseList.Count; i++)
+		for (int i = 0; i< PatientList.Count; i++)
 		{
 			System.Console.WriteLine("Patient {0} {1} with ID {2}", PatientList[i].patientFirstName, PatientList[i].patientLastName, PatientList[i].patientIdNum);
 		}
@@ -945,16 +952,47 @@ public class HospitalFrame : Form
 				helpText3 = "Empty";
 				helpText4 = "Empty";
 				helpText5 = "Empty";
-				changeSalaryHelp = false;
+				inputHelp = true;
+				findPersonHelp= true;
+	 			findRoomHelp = true;
+	 			changeRoomHelp = true;
+	 			changeSalaryHelp = false;
+	 			viewInfoHelp = true;
+	 			viewNursesHelp = true;
+	 			requestStockHelp = true;
 				helpText = true;
 				Invalidate();
 			}
 			else
 			{
+				string idNumHolder = positionInput.Text;
+				string newSalaryHolder = firstNameInput.Text;
+				string oldSalaryHolder = " ";
+					for( int i = 0; i < NurseList.Count ; i++)
+					{
+						if ( NurseList[i].nurseIdNum == idNumHolder)
+						{
+							oldSalaryHolder = NurseList[i].payRate;
+							Nurse v = NurseList[i];
+							v.payRate = newSalaryHolder;
+							NurseList[i] = v;
+						}
 		
+					}
+					if( oldSalaryHolder == " ")
+					{
+						System.Console.WriteLine(" ERROR: Nurse with id {0}  was not found. Please try again", idNumHolder);
+					}
+					else
+					{
+						System.Console.WriteLine(" Nurse with id {0}  new Salary is {1}, old salary was {2}",  idNumHolder, newSalaryHolder, oldSalaryHolder);	
+					}
 				
 				changeSalaryHelp = true;
 				helpText = false;
+				positionInput.Text = String.Empty;
+				firstNameInput.Text= String.Empty;
+				lastNameInput.Text = String.Empty;
 				Invalidate();
 			}
 		}
@@ -1002,23 +1040,40 @@ public class HospitalFrame : Form
 		}
 		else
 		{
-			if( changeSalaryHelp)
+			if( requestStockHelp)
 			{
-				helpText1 = "Nurse ID number";
-				helpText2 = "New Salary";
-				helpText3 = "Empty";
+				helpText1 = "Room Number";
+				helpText2 = "Problem Description";
+				helpText3 = "Problem Severity";
 				helpText4 = "Empty";
 				helpText5 = "Empty";
-				requestStockHelp = false;
+				findPersonHelp= true;
+	 			findRoomHelp = true;
+	 			changeRoomHelp = true;
+	 			changeSalaryHelp = true;
+	 			viewInfoHelp = true;
+	 			viewNursesHelp = true;
+	 			requestStockHelp = false;
 				helpText = true;
 				Invalidate();
 			}
 			else
 			{
 		
-	
+				string roomNumberHolder = positionInput.Text;
+				string problemDescriptionHolder = firstNameInput.Text;
+				string problemSeverityHolder = lastNameInput.Text;
+				Room newRoom = new Room();
+				newRoom.roomNumber= roomNumberHolder;
+				newRoom.roomDescription= problemDescriptionHolder;
+				newRoom.roomLevel = problemSeverityHolder;
+				RoomList.Add(newRoom);
+				System.Console.WriteLine( "Support ticket for Room {0} with description {1} and Severity Level {2} was added.", roomNumberHolder, problemDescriptionHolder, problemSeverityHolder);
 				requestStockHelp = true;
 				helpText = false;
+				positionInput.Text = String.Empty;
+				firstNameInput.Text= String.Empty;
+				lastNameInput.Text = String.Empty;
 				Invalidate();
 			}
 		}
