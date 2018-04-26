@@ -206,6 +206,7 @@ public class HospitalFrame : Form
             newNurse.payRate = sr.ReadLine();
             newNurse.nurseRoom = sr.ReadLine();
             NurseList.Add(newNurse);
+		currentNurseIndex++;
         }
         using(StreamReader sr1 = new StreamReader("Patient.txt"))
         {    
@@ -216,7 +217,7 @@ public class HospitalFrame : Form
             newPatient.insuranceId = sr1.ReadLine();
             newPatient.patientRoom = sr1.ReadLine();
             PatientList.Add(newPatient);
-
+	    currentPatientIndex++;
         }
     }
     protected override void OnPaint( PaintEventArgs ee)
@@ -1195,10 +1196,11 @@ protected void displayRefresh(System.Object sender, ElapsedEventArgs evt)
 
     protected void exitProgram(Object sender, EventArgs e)
     {
-                for(int i = 0; i < NurseList.Count; i++)
-        {
+                
                 using(var writer = new StreamWriter("Nurse.txt"))
             {
+		for(int i = 0; i < NurseList.Count; i++)
+		{
             writer.WriteLine(NurseList[i].nurseFirstName);    
             writer.WriteLine(NurseList[i].nurseLastName);
             writer.WriteLine(NurseList[i].nurseIdNum);
@@ -1207,10 +1209,11 @@ protected void displayRefresh(System.Object sender, ElapsedEventArgs evt)
             }            
         }        
         
-        for(int i = 0; i < PatientList.Count; i++)
-        {
+        
                 using(var writer1 = new StreamWriter("Patient.txt"))
             {
+		 for(int i = 0; i < PatientList.Count; i++)
+		{
             writer1.WriteLine(PatientList[i].patientFirstName);    
             writer1.WriteLine(PatientList[i].patientLastName);
             writer1.WriteLine(PatientList[i].patientIdNum);
