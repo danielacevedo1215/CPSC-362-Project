@@ -478,6 +478,7 @@ public class HospitalFrame : Form
 		}
 		if( helpText)
 		{
+			graph.FillRectangle(Brushes.White, 810, 495, 200, 110);
 			graph.DrawString(helpText1, specialFont, Brushes.Black, 820, 500);
 			graph.DrawString(helpText2, specialFont, Brushes.Black, 820, 520);
 			graph.DrawString(helpText3, specialFont, Brushes.Black, 820, 540);
