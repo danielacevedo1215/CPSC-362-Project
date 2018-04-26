@@ -18,7 +18,7 @@ public class HospitalFrame : Form
 	private int counter = 0;
 	public string roomInfo, roomInfoHolder;
 	// 1080X720
-	private const string titleOfFrame= "Hospital by Marcus Hoertz and Daniel Acevado";
+	private const string titleOfFrame= "Hospital by Marcus Hoertz and Daniel Acevedo";
 	private Label title = new Label();
 	private TextBox positionInput = new TextBox();
 	private TextBox firstNameInput = new TextBox();
@@ -66,6 +66,8 @@ public class HospitalFrame : Form
 	private bool helpText = false;
 	private Pen bluePen = new Pen(Color.Blue,4);
 	private Font specialFont = new System.Drawing.Font("Arial", 8, FontStyle.Regular);
+	private Font mediumFont = new System.Drawing.Font("Arial", 14, FontStyle.Regular);
+	private Font bigFont = new System.Drawing.Font("Arial", 20, FontStyle.Regular);
 	private Button inputInfo = new Button();
 	private Button findPerson = new Button();
 	private Button findRoom = new Button();
@@ -91,53 +93,53 @@ public class HospitalFrame : Form
 
 	public HospitalFrame()
 	{
-		Text = "Hospital by Hoertz Acevado";
+		Text = "Hospital by Hoertz Acevedo";
 		System.Console.WriteLine(" windowWidth = {0}. windowHeight = {1}.", frameWidth, frameHeight);
 		Size= new Size(frameWidth, frameHeight);
-		BackColor= Color.White;
-		title.Text = "Hospital by Hoertz Acevado";
+		BackColor= Color.Gray;
+		title.Text = "Hospital by Hoertz Acevedo";
 		title.Size = new Size(170,18);
 		title.Location = new Point(500, 20);
 		inputInfo.Text = "Input";
 		inputInfo.Size = new System.Drawing.Size(80,20);
 		inputInfo.BackColor = Color.Green;
-		inputInfo.Location = new Point (80, 600);
+		inputInfo.Location = new Point (80, 510);
 		findPerson.Text = "Locate Person";
 		findPerson.Size = new System.Drawing.Size(80,20);
 		findPerson.BackColor = Color.Green;
-		findPerson.Location = new Point (180, 600);
+		findPerson.Location = new Point (180, 510);
 		findRoom.Text = "Find Room";
 		findRoom.Size = new System.Drawing.Size(80,20);
 		findRoom.BackColor = Color.Green;
-		findRoom.Location = new Point (280, 600);
+		findRoom.Location = new Point (280, 510);
 		changeRoom.Text = "New Room";
 		changeRoom.Size = new System.Drawing.Size(80,20);
 		changeRoom.BackColor = Color.Green;
-		changeRoom.Location = new Point (380, 600);
+		changeRoom.Location = new Point (380, 510);
 		viewInfo.Text = "View Info";
 		viewInfo.Size = new System.Drawing.Size(80,20);
 		viewInfo.BackColor = Color.Green;
-		viewInfo.Location = new Point (480, 600);
+		viewInfo.Location = new Point (480, 510);
 		viewNurses.Text = "Nurses";
 		viewNurses.Size = new System.Drawing.Size(80,20);
 		viewNurses.BackColor = Color.Green;
-		viewNurses.Location = new Point (80, 650);
+		viewNurses.Location = new Point (80, 560);
 		viewPatients.Text = "Patients";
 		viewPatients.Size = new System.Drawing.Size(80,20);
 		viewPatients.BackColor = Color.Green;
-		viewPatients.Location = new Point (180, 650);
+		viewPatients.Location = new Point (180, 560);
 		viewMap.Text = "View Map";
 		viewMap.Size = new System.Drawing.Size(80,20);
 		viewMap.BackColor = Color.Green;
-		viewMap.Location = new Point (280, 650);
+		viewMap.Location = new Point (280, 560);
 		changeSalary.Text = "Salary";
 		changeSalary.Size = new System.Drawing.Size(80,20);
 		changeSalary.BackColor = Color.Red;
-		changeSalary.Location = new Point (380, 650);
+		changeSalary.Location = new Point (380, 560);
 		requestStock.Text = "Request Stock";
 		requestStock.Size = new System.Drawing.Size(80,20);
 		requestStock.BackColor = Color.Red;
-		requestStock.Location = new Point (480, 650);
+		requestStock.Location = new Point (480, 560);
 		exit.Text = "Exit";
 		exit.Size = new System.Drawing.Size( 60, 20);
 		exit.BackColor = Color.Green;
@@ -199,6 +201,23 @@ public class HospitalFrame : Form
 	protected override void OnPaint( PaintEventArgs ee)
 	{
 		Graphics graph = ee.Graphics;
+		graph.FillRectangle(Brushes.Yellow, 20, 490, 1000, 200);
+		graph.FillRectangle(Brushes.White, 20, 20, 510, 410);
+		graph.FillRectangle(Brushes.Blue, 600, 20, 400, 450);
+		graph.FillRectangle(Brushes.White, 610, 30, 380, 430);
+		graph.FillRectangle(Brushes.Red, 790, 40, 20, 80);
+		graph.FillRectangle(Brushes.Red, 760, 70, 80, 20);
+		graph.DrawString("Aherezo Hospital", bigFont, Brushes.Black, 695, 120);
+		graph.DrawString("Thank you for using the Aherezo Hospital", mediumFont, Brushes.Black,620, 160);
+		graph.DrawString("management system. Please click a button", mediumFont, Brushes.Black,620, 180);
+		graph.DrawString("To see the prompt. Click again to ", mediumFont, Brushes.Black,620, 200);
+		graph.DrawString("confirm input. ", mediumFont, Brushes.Black,620, 220);
+		graph.DrawString("After you are done, please exit to save", mediumFont, Brushes.Black,620, 260);
+		graph.DrawString("everything to the files. Have your ", mediumFont, Brushes.Black,620, 280);
+		graph.DrawString("admin password ready if you are one! ", mediumFont, Brushes.Black,620, 300);
+		graph.DrawString("Aherezo Hospital was designed by: ", mediumFont, Brushes.Black,620, 340);
+		graph.DrawString("Marcus Hoertz- Graphics and Buttons ", mediumFont, Brushes.Black,620, 360);
+		graph.DrawString("Daniel Acevedo- Functions and File I/O ", mediumFont, Brushes.Black,620, 380);
 		if(firstFloor)
 		{	//figure out how to draw a border
 			if(roomInfo == "101")
