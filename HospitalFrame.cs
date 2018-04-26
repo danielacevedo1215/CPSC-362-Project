@@ -55,16 +55,11 @@ public class HospitalFrame : Form
 	};
 	List<Room> RoomList = new List<Room>();	
 	private string roomNumberHolder= "";
-	private string idNumberHolder= "";
-	private string currentRoomNumber= "";
 	private string helpText1 = "";
 	private string helpText2 = "";
 	private string helpText3 = "";
 	private string helpText4 = "";
 	private string helpText5 = "";
-	private bool isFlashing = false;
-	private bool isHigh = false;
-	private bool mapShown = false;
 	private bool firstFloor = true;
 	private bool secondFloor= false;
 	private bool helpText = false;
