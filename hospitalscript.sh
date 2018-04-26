@@ -1,7 +1,7 @@
 #!/bin/bash
-#Author: Marcus Hoertz
-#course: CPSC223N
-echo script File for Project 6 begins
+#Author: Marcus Hoertz, Daniel Acevedo
+#course: CPSC362
+echo script File for Hospital Project begins
 rm *.dll
 rm *.exe
 echo HospitalFrame makes the frame for the hospital
