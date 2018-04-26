@@ -1,5 +1,9 @@
 //space for comments
-
+// 2018 CSUF Spring CS362 Hospital Project
+// By Marcus Hoertz and Daniel Acevedo
+// A graphical interface for a fake hospital.
+// Allows user input, different levels
+// and file I/O.
 
 using System;
 using System.Drawing;
@@ -201,12 +205,14 @@ public class HospitalFrame : Form
 	protected override void OnPaint( PaintEventArgs ee)
 	{
 		Graphics graph = ee.Graphics;
+		// basic outline for borders
 		graph.FillRectangle(Brushes.Yellow, 20, 490, 1000, 200);
 		graph.FillRectangle(Brushes.White, 20, 20, 510, 410);
 		graph.FillRectangle(Brushes.Blue, 600, 20, 400, 450);
 		graph.FillRectangle(Brushes.White, 610, 30, 380, 430);
 		graph.FillRectangle(Brushes.Red, 790, 40, 20, 80);
 		graph.FillRectangle(Brushes.Red, 760, 70, 80, 20);
+		// Text inside the help/ program info box
 		graph.DrawString("Aherezo Hospital", bigFont, Brushes.Black, 695, 120);
 		graph.DrawString("Thank you for using the Aherezo Hospital", mediumFont, Brushes.Black,620, 160);
 		graph.DrawString("management system. Please click a button", mediumFont, Brushes.Black,620, 180);
@@ -218,8 +224,9 @@ public class HospitalFrame : Form
 		graph.DrawString("Aherezo Hospital was designed by: ", mediumFont, Brushes.Black,620, 340);
 		graph.DrawString("Marcus Hoertz- Graphics and Buttons ", mediumFont, Brushes.Black,620, 360);
 		graph.DrawString("Daniel Acevedo- Functions and File I/O ", mediumFont, Brushes.Black,620, 380);
+		// draw the first floor with highlights when necessary
 		if(firstFloor)
-		{	//figure out how to draw a border
+		{	
 			if(roomInfo == "101")
 			{
 				graph.FillRectangle(Brushes.Green, 25, 25, 100, 100);
@@ -347,6 +354,8 @@ public class HospitalFrame : Form
 				graph.DrawString("114", specialFont, Brushes.Black, 465,370);
 			}
 		}
+		// if the second floor is selected, show all rooms on the second floor
+		// if there is a room highlighted, display it.
 		if (secondFloor)
 		{
 			if(roomInfo == "201")
@@ -476,6 +485,7 @@ public class HospitalFrame : Form
 				graph.DrawString("214", specialFont, Brushes.Black, 465,370);
 			}
 		}
+		// help text outline and words displayed
 		if( helpText)
 		{
 			graph.FillRectangle(Brushes.White, 810, 495, 200, 110);
@@ -487,6 +497,7 @@ public class HospitalFrame : Form
 		}
 	}
 
+	// gets input from the user to put into either nurse or patient
 	protected void newInput(Object sender, EventArgs e)
 	{
 		if( inputHelp)
@@ -539,6 +550,7 @@ public class HospitalFrame : Form
 		}
 	}
 
+	// takes info from newInput and puts it into the appropriate list
 	protected void insertInfo(string positionInput, string firstNameInput, string lastNameInput, string payOrInsuranceInput, string roomNumInput)
 	{
 		if( positionInput == "nurse" || positionInput == "Nurse")
@@ -601,6 +613,7 @@ public class HospitalFrame : Form
 		}
 	}
 
+	// finds a person based off their id and flashes their position on the map
 	protected void seePerson(Object sender, EventArgs e)
 	{
 		if( findPersonHelp)
@@ -664,6 +677,7 @@ public class HospitalFrame : Form
 		}
 	}
 
+	//Displays all nurses and patients in a particular room, and flashes the room location on the map
 	protected void seeRoom(Object sender, EventArgs e)
 	{
 		if( findRoomHelp)
@@ -721,6 +735,7 @@ public class HospitalFrame : Form
 		}
 	}
 
+	// changes the room location of a patient or nurse
 	protected void modifyRoom(Object sender, EventArgs e)
 	{
 		if( changeRoomHelp)
@@ -793,6 +808,9 @@ public class HospitalFrame : Form
 		}
 	}
 
+	// shows all info on a particular nurse or patient
+	// ie First/Last Name, Id number, pay or insurance,
+	// and current room
 	protected void seeInfo(Object sender, EventArgs e)
 	{
 		if( viewInfoHelp)
@@ -869,6 +887,7 @@ public class HospitalFrame : Form
 	
 	}
 
+	//shows all nurses currently in the system
 	protected void seeNurses(Object sender, EventArgs e)
 	{
 		helpText= false;
@@ -888,6 +907,7 @@ public class HospitalFrame : Form
 		}
 	}
 
+	//shows all patients currently in the system
 	protected void seePatients(Object sender, EventArgs e)
 	{
 		helpText= false;
@@ -907,6 +927,7 @@ public class HospitalFrame : Form
 		}
 	}
 
+	//displays both levels of the map
 	protected void seeMap(Object sender, EventArgs e)
 	{
 		helpText= false;
@@ -923,6 +944,7 @@ public class HospitalFrame : Form
 		Invalidate();
 	}
 
+	//changes the salary of a nurse. Is username and password protected
 	protected void modifySalary(Object sender, EventArgs e)
 	{
 		if( !adminLevel)
@@ -1019,6 +1041,8 @@ public class HospitalFrame : Form
 
 	}
 
+	//adds a support ticket to the room list to be modified
+	//by an outside party
 	protected void modifyStock(Object sender, EventArgs e)
 	{
 		if( !adminLevel)
@@ -1100,6 +1124,9 @@ public class HospitalFrame : Form
 		
 	}
 
+
+	//display clock for a flashing room. Alternates on and off for 7 counts
+	// "flashing" three times.
 	protected void flashRefresh(System.Object sender, ElapsedEventArgs evt)
 	{
 		if(counter < 7)
@@ -1129,6 +1156,7 @@ public class HospitalFrame : Form
 		
 	}
 
+	//displays both levels of the hospital
 protected void displayRefresh(System.Object sender, ElapsedEventArgs evt)
 	{
 		if (counter == 0)
