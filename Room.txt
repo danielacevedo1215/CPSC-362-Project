@@ -1,0 +1,9 @@
+101
+Leaky Faucet
+Low
+102
+On fire
+High
+101
+fire
+low
