@@ -199,26 +199,70 @@ public class HospitalFrame : Form
         DisplayClock.Elapsed += new ElapsedEventHandler(displayRefresh);
                 using(StreamReader sr = new StreamReader("Nurse.txt"))
         {
-              Nurse newNurse = new Nurse();
-            newNurse.nurseFirstName = sr.ReadLine();
-            newNurse.nurseLastName = sr.ReadLine();
-            newNurse.nurseIdNum = sr.ReadLine();
-            newNurse.payRate = sr.ReadLine();
-            newNurse.nurseRoom = sr.ReadLine();
-            NurseList.Add(newNurse);
-		currentNurseIndex++;
+		bool testValue = true;
+		while(testValue)
+		{
+			string nurseCheck = sr.ReadLine();
+			if (nurseCheck== null)
+			{
+				testValue = false;
+			}
+			else
+			{
+              		Nurse newNurse = new Nurse();
+          		newNurse.nurseFirstName = nurseCheck;
+            		newNurse.nurseLastName = sr.ReadLine();
+           		newNurse.nurseIdNum = sr.ReadLine();
+           		newNurse.payRate = sr.ReadLine();
+          	 	newNurse.nurseRoom = sr.ReadLine();
+            		NurseList.Add(newNurse);
+			currentNurseIndex++;
+			}
+		}
         }
         using(StreamReader sr1 = new StreamReader("Patient.txt"))
-        {    
-            Patient newPatient = new Patient();
-            newPatient.patientFirstName = sr1.ReadLine();
-            newPatient.patientLastName = sr1.ReadLine();
-            newPatient.patientIdNum = sr1.ReadLine();
-            newPatient.insuranceId = sr1.ReadLine();
-            newPatient.patientRoom = sr1.ReadLine();
-            PatientList.Add(newPatient);
-	    currentPatientIndex++;
+        {   
+	    bool testValue = true;
+	    while(testValue)
+	    {
+		string patientCheck = sr1.ReadLine();
+		if(patientCheck == null)
+		{
+			testValue = false;
+		}
+		else
+		{ 
+           	 Patient newPatient = new Patient();
+           	 newPatient.patientFirstName = patientCheck;
+            	newPatient.patientLastName = sr1.ReadLine();
+            	newPatient.patientIdNum = sr1.ReadLine();
+            	newPatient.insuranceId = sr1.ReadLine();
+            	newPatient.patientRoom = sr1.ReadLine();
+            	PatientList.Add(newPatient);
+	    	currentPatientIndex++;
+		}
+	    }
         }
+	using(StreamReader sr2= new StreamReader("Room.txt"))
+	{
+		bool testValue= true;
+		while(testValue)
+		{
+			string roomCheck = sr2.ReadLine();
+			if(roomCheck == null)
+			{
+				testValue = false;
+			}
+			else
+			{
+				Room newRoom = new Room();
+				newRoom.roomNumber = roomCheck;
+				newRoom.roomDescription= sr2.ReadLine();
+				newRoom.roomLevel = sr2.ReadLine();
+				RoomList.Add(newRoom);
+			}
+		}
+	}
     }
     protected override void OnPaint( PaintEventArgs ee)
     {
@@ -1086,7 +1130,7 @@ public class HospitalFrame : Form
             }
             else
             {
-                if( positionInput.Text == "admin" && firstNameInput.Text == "password")
+                if( positionInput.Text == "Thor" && firstNameInput.Text == "pointbreak")
                 {
                     System.Console.WriteLine( "Welcome administrator. Admin powers unlocked");
                     changeSalary.BackColor = Color.Green;
@@ -1197,7 +1241,7 @@ protected void displayRefresh(System.Object sender, ElapsedEventArgs evt)
     protected void exitProgram(Object sender, EventArgs e)
     {
                 
-                using(var writer = new StreamWriter("Nurse.txt"))
+                using(var writer = new StreamWriter("Nurse.txt", false))
             {
 		for(int i = 0; i < NurseList.Count; i++)
 		{
@@ -1210,7 +1254,7 @@ protected void displayRefresh(System.Object sender, ElapsedEventArgs evt)
         }        
         
         
-                using(var writer1 = new StreamWriter("Patient.txt"))
+                using(var writer1 = new StreamWriter("Patient.txt", false))
             {
 		 for(int i = 0; i < PatientList.Count; i++)
 		{
@@ -1221,6 +1265,15 @@ protected void displayRefresh(System.Object sender, ElapsedEventArgs evt)
             writer1.WriteLine(PatientList[i].patientRoom);
             }            
         }
+		using(var writer2 = new StreamWriter("Room.txt", false))
+		{
+			for(int i = 0; i < RoomList.Count; i++)
+			{
+				writer2.WriteLine(RoomList[i].roomNumber);
+				writer2.WriteLine(RoomList[i].roomDescription);
+				writer2.WriteLine(RoomList[i].roomLevel);
+			}
+		}
         System.Console.WriteLine("This program will now end");
         Close();
     }
